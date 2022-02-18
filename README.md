@@ -7,12 +7,12 @@ Lightweight i3 wallpaper manager written in bash
 ### Requirements
 
 - `feh`
+- `zsh`
 
 Install `wp`
 
 ```
-curl https://raw.githubusercontent.com/Streamer272/i3-wallpaper-manager/main/wp -o /usr/bin/wp
-chmod +x /usr/bin/wp
+curl https://raw.githubusercontent.com/Streamer272/i3-wallpaper-manager/main/wp -o /usr/bin/wp && chmod +x /usr/bin/wp
 ```
 
 ## Quick start
@@ -28,4 +28,9 @@ If you want your wallpaper to change every 10 seconds, you can use `wp --loop` t
 
 ### Disclaimer
 
-If you once set wallpaper with `wp --choose`, once you reboot your changes will be lost
+If you set wallpaper with `wp`, once you reboot your changes will be lost.
+If you want them to remain, add this to your i3 `config` file:
+
+```
+exec_always --no-startup-id wp --choose my-favorite-wallpaper.png
+```
