@@ -1,0 +1,87 @@
+#!/usr/bin/zsh
+
+WALLPAPERS_DIR="$HOME/.config/i3/wallpapers"
+
+set_wallpaper() {
+    echo "Setting wallpaper to $1"
+    feh --bg-scale $WALLPAPERS_DIR/$1
+}
+
+help() {
+    echo "Usage: wp [OPTIONS] [ARGUMENTS]"
+    echo ""
+    echo "i3 WallPaper manager"
+    echo ""
+    echo "Options:"
+    echo "\t-h, --help\t\tShow help"
+    echo "\t-l, --loop\t\tLoop all available wallpapers"
+    echo "\t-c, --choose <search>\tChoose a wallpaper"
+    echo "\t\t\t<search> - partial wallpaper file name"
+    echo "\t-r, --random\t\tPick a random wallpaper"
+}
+
+loop() {
+    while true; do
+        for wallpaper in $(ls $WALLPAPERS_DIR); do
+            feh --bg-scale $WALLPAPERS_DIR/$wallpaper
+            sleep 10
+        done
+    done
+}
+
+choose() {
+    wallpapers=()
+    for wallpaper in $(ls $WALLPAPERS_DIR); do
+        if [[ $wallpaper == *"$1"* ]]; then 
+            wallpapers+=("$wallpaper")
+        fi
+    done
+
+    wallpaper=""
+
+    if [[ "${#wallpapers}" == "1" ]]; then
+        wallpaper=$wallpapers[1]
+    else
+        PS3="Multiple wallpapers found, choose one: "
+        select choise in $wallpapers; do
+            if [[ $choise != "" ]]; then
+                wallpaper=$choise
+                break
+            else
+                PS3="Wrong choise, please choose one wallpaper: "
+            fi
+        done
+    fi
+
+    set_wallpaper $wallpaper
+}
+
+random() {
+    wallpapers=()
+    for wallpaper in $(ls $WALLPAPERS_DIR); do
+        wallpapers+=("$wallpaper")
+    done
+
+    index=$(echo $((1 + $RANDOM % ${#wallpapers})))
+    wallpaper=$wallpapers[$index]
+
+    set_wallpaper $wallpaper
+}
+
+case "$1" in
+    "-h"|"--help")
+        help
+        ;;
+    "-l"|"--loop")
+        roll
+        ;;
+    "-c"|"--choose")
+        choose $2
+        ;;
+    "-r"|"--random")
+        random
+        ;;
+    *)
+        help
+        ;;
+esac
