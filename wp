@@ -14,10 +14,12 @@ help() {
     echo ""
     echo "Options:"
     echo "\t-h, --help\t\tShow help"
+    echo "\t-v, --version\t\tShow version"
     echo "\t-l, --loop\t\tLoop all available wallpapers"
     echo "\t-c, --choose <search>\tChoose a wallpaper"
     echo "\t\t\t<search> - partial wallpaper file name"
     echo "\t-r, --random\t\tPick a random wallpaper"
+    echo "\t-u, --update\t\tUpdate wp to latest version"
 }
 
 loop() {
@@ -68,9 +70,29 @@ random() {
     set_wallpaper $wallpaper
 }
 
+version() {
+    echo "wp version 1.0"
+}
+
+update() {
+    prefix=""
+    if [[ "$EUID" != 0 ]]; then
+        echo "Not root, asking for sudo permissions"
+        prefix="sudo"
+    fi
+
+    wp_path=$(which wp)
+
+    $prefix curl https://raw.githubusercontent.com/Streamer272/i3-wallpaper-manager/main/wp --output $wp_path --silent
+    $prefix chmod +x $wp_path
+}
+
 case "$1" in
     "-h"|"--help")
         help
+        ;;
+    "-v"|"--version")
+        version
         ;;
     "-l"|"--loop")
         roll
@@ -80,6 +102,9 @@ case "$1" in
         ;;
     "-r"|"--random")
         random
+        ;;
+    "-u"|"--update")
+        update
         ;;
     *)
         help
