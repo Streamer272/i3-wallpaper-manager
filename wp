@@ -8,8 +8,7 @@ set_wallpaper() {
 }
 
 help() {
-    echo "Usage: wp [OPTIONS] [ARGUMENTS]"
-    echo ""
+    echo "Usage: wp [OPTIONS] [ARGUMENTS]" echo ""
     echo "i3 WallPaper manager"
     echo ""
     echo "Options:"
@@ -89,13 +88,13 @@ random() {
 update() {
     prefix=""
     if [[ "$EUID" != 0 ]]; then
-        echo "Not root, asking for sudo permissions"
+        echo "Not root, using sudo"
         prefix="sudo"
     fi
 
     wp_path=$(which wp)
 
-    $prefix curl https://raw.githubusercontent.com/Streamer272/i3-wallpaper-manager/main/wp --output $wp_path --silent
+    $prefix curl https://raw.githubusercontent.com/Streamer272/i3-wallpaper-manager/main/wp --header "Cache-Control: no-cache, no-store, must-revalidate" --header "Pragma: no-cache" --header "Expires: 0" --output $wp_path --silent
     $prefix chmod +x $wp_path
 }
 
