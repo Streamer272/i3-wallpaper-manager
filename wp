@@ -15,11 +15,26 @@ help() {
     echo "Options:"
     echo "\t-h, --help\t\tShow help"
     echo "\t-v, --version\t\tShow version"
+    echo "\t-d, --directory\t\tShow wallpapers directory"
+    echo "\t-l, --list <search>\tList all wallpapers"
+    echo "\t\t\t<search> - partial wallpaper name"
     echo "\t-l, --loop\t\tLoop all available wallpapers"
     echo "\t-c, --choose <search>\tChoose a wallpaper"
     echo "\t\t\t<search> - partial wallpaper file name"
     echo "\t-r, --random\t\tPick a random wallpaper"
     echo "\t-u, --update\t\tUpdate wp to latest version"
+}
+
+version() {
+    echo "wp version 1.0"
+}
+
+list() {
+    for wallpaper in $(ls $WALLPAPERS_DIR); do
+        if [[ $wallpaper == *"$1"* ]]; then 
+            echo "$wallpaper"
+        fi
+    done
 }
 
 loop() {
@@ -70,9 +85,6 @@ random() {
     set_wallpaper $wallpaper
 }
 
-version() {
-    echo "wp version 1.0"
-}
 
 update() {
     prefix=""
@@ -94,7 +106,13 @@ case "$1" in
     "-v"|"--version")
         version
         ;;
-    "-l"|"--loop")
+    "-d"|"--directory")
+        echo "$WALLPAPERS_DIR"
+        ;;
+    "-l"|"--list")
+        list $2
+        ;;
+    "-L"|"--loop")
         roll
         ;;
     "-c"|"--choose")
