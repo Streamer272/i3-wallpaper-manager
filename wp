@@ -17,7 +17,8 @@ help() {
     echo "\t-d, --directory\t\tShow wallpapers directory"
     echo "\t-l, --list <search>\tList all wallpapers"
     echo "\t\t\t<search> - partial wallpaper name"
-    echo "\t-l, --loop\t\tLoop all available wallpapers"
+    echo "\t-l, --loop <time>\tLoop all available wallpapers"
+    echo "\t\t\t<time> - time between wallpapers"
     echo "\t-c, --choose <search>\tChoose a wallpaper"
     echo "\t\t\t<search> - partial wallpaper file name"
     echo "\t-r, --random\t\tPick a random wallpaper"
@@ -25,7 +26,7 @@ help() {
 }
 
 version() {
-    echo "wp version 1.0"
+    echo "wp version 1.1"
 }
 
 list() {
@@ -37,10 +38,12 @@ list() {
 }
 
 loop() {
+    sleep_time=10
+    [[ "$1" != "" ]] && sleep_time="$1"
     while true; do
         for wallpaper in $(ls $WALLPAPERS_DIR); do
             feh --bg-scale $WALLPAPERS_DIR/$wallpaper
-            sleep 10
+            sleep $sleep_time
         done
     done
 }
@@ -112,7 +115,7 @@ case "$1" in
         list $2
         ;;
     "-L"|"--loop")
-        roll
+        loop $2
         ;;
     "-c"|"--choose")
         choose $2
