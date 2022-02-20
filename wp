@@ -17,7 +17,7 @@ help() {
     echo "\t-d, --directory\t\tShow wallpapers directory"
     echo "\t-l, --list <search>\tList all wallpapers"
     echo "\t\t\t<search> - partial wallpaper name"
-    echo "\t-l, --loop <time>\tLoop all available wallpapers"
+    echo "\t-L, --loop <time>\tLoop all available wallpapers"
     echo "\t\t\t<time> - time between wallpapers"
     echo "\t-c, --choose <search>\tChoose a wallpaper"
     echo "\t\t\t<search> - partial wallpaper file name"
@@ -102,31 +102,13 @@ update() {
 }
 
 case "$1" in
-    "-h"|"--help")
-        help
-        ;;
-    "-v"|"--version")
-        version
-        ;;
-    "-d"|"--directory")
-        echo "$WALLPAPERS_DIR"
-        ;;
-    "-l"|"--list")
-        list $2
-        ;;
-    "-L"|"--loop")
-        loop $2
-        ;;
-    "-c"|"--choose")
-        choose $2
-        ;;
-    "-r"|"--random")
-        random
-        ;;
-    "-u"|"--update")
-        update
-        ;;
-    *)
-        help
-        ;;
+    "-h"|"--help") help;;
+    "-v"|"--version") version;;
+    "-d"|"--directory") echo "$WALLPAPERS_DIR";;
+    "-l"|"--list") list $2;;
+    "-L"|"--loop") loop $2;;
+    "-c"|"--choose") choose $2;;
+    "-r"|"--random") random;;
+    "-u"|"--update") update;;
+    *) help;;
 esac
